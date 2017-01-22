@@ -11,7 +11,7 @@ class MyFormatter extends Formatter {
         public String format(LogRecord rec) {
                 StringBuffer buf = new StringBuffer(1000);
                 
-                if (rec.getLevel().intValue() == Level.SEVERE.intValue()) {
+                if (rec.getLevel().intValue() >= Level.SEVERE.intValue()) {
                 	colorMsg = " style=\"color:red\"";
                 } else if(rec.getLevel().intValue() == Level.WARNING.intValue()){
                 	colorMsg = " style=\"color:darkorange\"";
