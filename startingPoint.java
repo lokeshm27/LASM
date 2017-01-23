@@ -72,22 +72,22 @@ public class startingPoint {
 					System.out.println("Error : Invalid token : %empty%");
 					return;
 				}
-				logger.info("lasm.startingPoint.prepare : Processing line : " + line);
+				String logString = "lasm.startingPoint.prepare : line " + lineNum + " : " + line;
 				String fields[] = line.split(" ");
 				switch(fields.length){
 					case 0 : 
-						logger.info("lasm.startingPoint.prepare : line " + Integer.toString(lineNum) + ": Empty line.");
+						logString = " | Empty line.";
 						break;
 					
 					case 1 :
-						logger.info("lasm.startingPoint.prepare : line " + Integer.toString(lineNum) + ": field 1 present.");
+						logString += " | field 1 present.";
 						if(dat.isOpcode(fields[0])){
-							logger.info("lasm.startingPoint.prepare : line " + Integer.toString(lineNum) + ": field 1 - Mnemonic.");
+							logString += " | field 1 - Mnemonic.";
 							programLength++;
 							String[] temp = {"%empty%", fields[0], "%empty%"}; 
 							program.put(programLength, temp);
 						} else if(dat.isDirective(fields[0])){
-							logger.info("lasm.startingPoint.prepare : line " + Integer.toString(lineNum) + ": field 1 - Directive.");
+							logString += " | field 1 - Directive.";
 							programLength++;
 							String[] temp = {"%empty%", fields[0], "%empty%"}; 
 							program.put(programLength, temp);
@@ -99,24 +99,24 @@ public class startingPoint {
 						break;
 						
 					case 2 : 
-						logger.info("lasm.startingPoint.prepare : line " + Integer.toString(lineNum) + ": field 1 2 present.");
+						logString += " | field 1 2 present.";
 						if(dat.isOpcode(fields[0])){
-							logger.info("lasm.startingPoint.prepare : line " + Integer.toString(lineNum) + ": field 1 - Mnemonic. field 2 - Operands.");
+							logString += "| field 1 - Mnemonic. field 2 - Operands.";
 							programLength++;
 							String[] temp = {"%empty%", fields[0], fields[1]};
 							program.put(programLength, temp);
 						}else if(dat.isDirective(fields[0])){
-							logger.info("lasm.startingPoint.prepare : line " + Integer.toString(lineNum) + ": field 1 - Directive. field 2 - Operands.");
+							logString += " | field 1 - Directive. field 2 - Operands.";
 							programLength++;
 							String[] temp = {"%empty%", fields[0], fields[1]};
 							program.put(programLength, temp);
 						}else if(dat.isOpcode(fields[1])){
-							logger.info("lasm.startingPoint.prepare : line " + Integer.toString(lineNum) + ": field 1 - Label. field 2 - Mnemonic.");
+							logString += " | field 1 - Label. field 2 - Mnemonic.";
 							programLength++;
 							String[] temp = {fields[0], fields[1], "%empty%"};
 							program.put(programLength, temp);
 						}else if(dat.isDirective(fields[1])){
-							logger.info("lasm.startingPoint.prepare : line " + Integer.toString(lineNum) + ": field 1 - Label. field 2 - Directive.");
+							logString += " | field 1 - Label. field 2 - Directive.";
 							programLength++;
 							String[] temp = {fields[0], fields[1], "%empty%"};
 							program.put(programLength, temp);
@@ -128,7 +128,7 @@ public class startingPoint {
 						break;
 						
 					case 3 :
-						logger.info("lasm.startingPoint.prepare : line " + Integer.toString(lineNum) + ": field 1 2 3 present. Assuming fields 1 - Label, 2 - Mnemonic, 3 - Operands.");
+						logString += " | field 1 2 3 present. Assuming fields 1 - Label, 2 - Mnemonic, 3 - Operands.";
 						programLength++;
 						String[] temp = {fields[0], fields[1], fields[2]};
 						program.put(programLength, temp);
@@ -138,6 +138,8 @@ public class startingPoint {
 						logger.severe("lasm.startingPoint.prepare : line " + Integer.toString(lineNum) + ": More than 3 fields. ");
 						System.out.println("Error : Line " + lineNum + ": Invalid Syntax.");
 				}
+				logger.info(logString);
+				
 			}
 			if(programLength == 0){
 				logger.warning("lasm.startingPoint.prepare : " + fileName + " : No Program lines. Skipping");
